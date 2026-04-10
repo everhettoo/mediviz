@@ -11,9 +11,9 @@ The fastest and easiest is running the pre-built app (for macOS).
 1. Download the `mediviz` app from  <a href="https://github.com/everhettoo/mediviz/tree/main/dist">`dist`</a> folder (in this repo) to your local machine
 2. Double click `mediviz` app to run
 
-## Run the python app
+## B. Run the python app
 
-The project contents:
+Before running the python app, get familiar with the project contents:
 - config/ – configure model path, dataset (for scatter-plot analysis), and LBP parameters
 - models/ – contains built models except the larger one (everything can be found here: https://drive.google.com/drive/folders/1k3odl1l5r9wkupQVh2W7f1euLRhd2X5Y)
 - resources/ – images used by app
@@ -39,10 +39,10 @@ Sample in `config/app_config.py` using the winner model:
     lda = True
 ```
 
-## Build and run on local machine
-Pre-requisite: Run the python app
+## C. Build and run on local machine
+Pre-requisite: Step B. \
 This will build the app using `pyinstaller` for running on local machine (macOS).
-1. While still inside mediviz, type the following in terminal: 
+1. While still inside `mediviz/`, type the following in terminal: 
 ```python
 pyinstaller \
     --name mediviz \
@@ -57,4 +57,4 @@ pyinstaller \
     --hidden-import sklearn.preprocessing \
     app.py
 ```
-2. Locate to `dist/` and click the mediviz to run the app
+2. Locate to `dist/` and click the `mediviz` to run the app

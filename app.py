@@ -5,7 +5,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtCore import (
+    QCoreApplication,
+    QFile,
+    QLockFile,
+    QSharedMemory,
+    QSystemSemaphore,
+    Qt,
+    QThread,
+    pyqtSignal,
+)
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import (
     QApplication,
@@ -25,6 +34,7 @@ from PyQt5.QtWidgets import (
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
+import libs.installer_lib as installer
 from config import app_config
 from libs import dicom_helper as dicom
 from libs import feature_extractor as extractor
@@ -35,6 +45,46 @@ from libs.workers import (
     LBPOverlayWorker,
     UploadWorker,
 )
+
+# class SingleInstanceApp(QApplication):
+#     def __init__(self, argv):
+#         super().__init__(argv)
+
+#         # Define a system-wide semaphore for shared memory
+#         self.semaphore = QSystemSemaphore("SingleAppSemaphore", QSystemSemaphore.Create)
+#         self.semaphore.acquire()  # Try to acquire the semaphore lock
+
+#         # Shared memory block for instance checking
+#         self.shared_memory = QSharedMemory("SingleAppSharedMemory")
+
+#         if self.shared_memory.attach():
+#             # Another instance is running
+#             print("Another instance is already running.")
+#             sys.exit(0)  # Exit the current instance
+
+#         # Attach the shared memory to block others
+#         self.shared_memory.create(1)
+
+#     def __del__(self):
+#         self.shared_memory.detach()  # Detach the shared memory when the app exits
+#         self.semaphore.release()  # Release the semaphore
+
+
+class SingleInstanceApp(QApplication):
+    def __init__(self, argv):
+        super().__init__(argv)
+
+        # Path to a lock file (this file will be used to check if an instance is already running)
+        self.lock_file = QLockFile(installer.resource_path("myapp.lock"))
+
+        # Try to lock the file, if it fails, that means an instance is already running
+        if not self.lock_file.tryLock():
+            print("Another instance is already running.")
+            sys.exit(0)  # Exit the current instance
+
+    def __del__(self):
+        # Release the lock on the file when the app exits
+        self.lock_file.unlock()
 
 
 class MainWindow(QWidget):
@@ -598,8 +648,9 @@ class MainWindow(QWidget):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    # To ensure only one instance of the application runs, we use SingleInstanceApp instead of QApplication.
+    # app = QApplication(sys.argv)
+    app = SingleInstanceApp(sys.argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
     sys.exit(app.exec_())

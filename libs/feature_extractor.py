@@ -85,6 +85,34 @@ def perform_lda(X_train, y_train, n_components):
     return X_lda
 
 
+def resize_image(img: np.ndarray, height: int, width: int) -> np.ndarray:
+    # Get current dimensions of the image
+    current_height, current_width = img.shape[:2]
+
+    # If the image is square, just resize it
+    if current_height == current_width:
+        return cv2.resize(img, (width, height))
+
+    # Calculate padding
+    if current_height > current_width:
+        pad_left = (current_height - current_width) // 2
+        pad_right = current_height - current_width - pad_left
+        padded_img = cv2.copyMakeBorder(
+            img, 0, 0, pad_left, pad_right, cv2.BORDER_CONSTANT, value=(0, 0, 0)
+        )
+    else:
+        pad_top = (current_width - current_height) // 2
+        pad_bottom = current_width - current_height - pad_top
+        padded_img = cv2.copyMakeBorder(
+            img, pad_top, pad_bottom, 0, 0, cv2.BORDER_CONSTANT, value=(0, 0, 0)
+        )
+
+    # Resize the padded image
+    resized_img = cv2.resize(padded_img, (width, height))
+
+    return resized_img
+
+
 def preprocess_cxr(img_path, target_size=(256, 256)):
     img = dicom.read_dicom_image(img_path)
 
@@ -95,5 +123,8 @@ def preprocess_cxr(img_path, target_size=(256, 256)):
     contrast = processor.adjust_contrast(normalized)
 
     resized = cv2.resize(contrast, target_size)
+
+    # Resizing for prediction loses accuracy. So, for now resizing only for display, not for prediction.
+    contrast = resize_image(contrast, 1024, 1024)
 
     return resized, contrast
