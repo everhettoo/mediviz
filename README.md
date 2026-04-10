@@ -1,17 +1,17 @@
 # Mediviz
-A prototype for viewing and analyzing medical images using CV and AI.
+A prototype for viewing and analyzing medical images using CV and AI; regularly updated for stability.
 
 ## Ways to run the app:
-1. Run the built (executable) from `dist/` for mac - the fastest
-2. Run the python app
-3. Build and run on local machine
+A. Run the pre-built (executable) - the fastest \
+B. Run the python app \
+C. Build and run on local machine
 
-## 1. Run the built (executable) from `dist/` for mac
-The fastest and easiest.
-1. Download the `mediviz` app from `dist` folder (in github) to your local machine
-2. Double click `mediviz` app to run.
+## A. Run the pre-built (executable)
+The fastest and easiest is running the pre-built app (for macOS).
+1. Download the `mediviz` app from  <a href="https://github.com/everhettoo/mediviz/tree/main/dist">`dist`</a> folder (in this repo) to your local machine
+2. Double click `mediviz` app to run
 
-## 2. Run the python app
+## Run the python app
 
 The project contents:
 - config/ – configure model path, dataset (for scatter-plot analysis), and LBP parameters
@@ -20,14 +20,13 @@ The project contents:
 - libs/ – custom libraries used by notebooks and app
 - app.py – the prototype app
 
-To run the application:
 Pre-requisite: Python was installed and configured in the local machine.
-- locate into the dir after cloning the code locally: `cd mediviz`
-- create virtual environment (to abstract pip installation): `python -m venv venv`
-- activate the virtual environment (bash cmd): `source venv/bin/activate`
-- activate the virtual environment (windows): `venv\Scripts\activate`
-- install required libraries: `pip install -r requirements.txt`
-- run the application in terminal: `python app.py`
+1. locate into the dir after cloning the code locally: `cd mediviz`
+2. create virtual environment (to abstract pip installation): `python -m venv venv`
+3. activate the virtual environment (bash cmd): `source venv/bin/activate`
+4. activate the virtual environment (windows): `venv\Scripts\activate`
+5. install required libraries: `pip install -r requirements.txt`
+6. run the application in terminal: `python app.py`
 
 Sample in `config/app_config.py` using the winner model:
 ``` python
@@ -40,7 +39,12 @@ Sample in `config/app_config.py` using the winner model:
     lda = True
 ```
 
-```pyinstaller \
+## Build and run on local machine
+Pre-requisite: Run the python app
+This will build the app using `pyinstaller` for running on local machine (macOS).
+1. While still inside mediviz, type the following in terminal: 
+```python
+pyinstaller \
     --name mediviz \
     --windowed \
     --icon=resources/mediviz.icns \
@@ -51,4 +55,6 @@ Sample in `config/app_config.py` using the winner model:
     --hidden-import sklearn.pipeline \
     --hidden-import sklearn.utils \
     --hidden-import sklearn.preprocessing \
-    app.py```
+    app.py
+```
+2. Locate to `dist/` and click the mediviz to run the app
