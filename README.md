@@ -8,7 +8,7 @@ C. Build and run on local machine
 
 ## A. Run the pre-built (executable)
 The fastest and easiest is running the pre-built app (for macOS).
-1. Download the `mediviz` app from  <a href="https://github.com/everhettoo/mediviz/tree/main/dist">`dist`</a> folder (in this repo) to your local machine
+1. Download the `mediviz` app from  <a href="https://drive.google.com/drive/u/0/folders/1RmV2LB0CJiYligOeRxa08z5hOWYEPiZ7">`app-dev`</a> folder (in this repo) to your local machine
 2. Double click `mediviz` app to run
 
 ## B. Run the python app
