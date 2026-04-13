@@ -1,5 +1,5 @@
 # Mediviz
-A prototype for viewing and analyzing medical images using CV and AI; regularly updated for stability.
+A prototype for viewing and analyzing medical images using CV and AI; Incremental feature updates are pushed regularly..
 
 ## Ways to run the app:
 A. Run the pre-built (executable) - the fastest \
