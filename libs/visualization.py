@@ -5,12 +5,59 @@ import pickle
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
 
 import libs.installer_lib as installer
 from libs import feature_extractor as extractor
+
+
+def create_dataset(dataset, split, radius, method, save_path=None):
+    rows = []
+    failed = 0
+
+    split_path = os.path.join(installer.resource_path(dataset.ROOT_DIR), split)
+
+    for label in ["normal", "pneumonia"]:
+        class_path = os.path.join(split_path, label)
+
+        for file in tqdm(os.listdir(class_path), desc=f"{split}-{label}"):
+            img_path = os.path.join(class_path, file)
+
+            try:
+                preprocessed, _ = extractor.preprocess_cxr(img_path)
+                vectors = extractor.extract_feature_lbp(preprocessed, radius, method)
+
+                rows.append(
+                    {
+                        "image": vectors,  # ndarray
+                        "target": 0 if label == "normal" else 1,
+                    }
+                )
+
+            except Exception as e:
+                print(f"exception: {e}")
+                failed += 1
+                continue
+
+    print(f"Failed: {failed}")
+
+    df = pd.DataFrame(rows)
+
+    if save_path:
+        # df.to_pickle(save_path)  # ✅ safe for ndarray
+        df.to_hdf(save_path, key="df", mode="w")
+
+
+def load_dataset_h5(load_path):
+    df = pd.read_hdf(load_path, key="df")
+
+    X = np.stack(df["image"].values)
+    y = df["target"].values
+
+    return X, y
 
 
 def load_dataset(dataset, split, radius, method):

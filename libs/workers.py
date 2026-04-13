@@ -146,10 +146,13 @@ class DataLoadingWorker(QObject):
             self.progress.emit(i)
             time.sleep(0.005)  # small delay to simulate progress
 
-        # Load X_train and y_train.
-        X_train, y_train = viz.load_dataset(
-            self.config.dataset, "train", self.config.radius, self.config.method
-        )
+        # Load X_train and y_train - initial version. This has the dataset size issue.
+        # X_train, y_train = viz.load_dataset(
+        #     self.config.dataset, "train", self.config.radius, self.config.method
+        # )
+
+        # The revised using h5 version to handle larger dataset size.
+        X_train, y_train = viz.load_dataset_h5(self.config.train_dataset_path)
 
         self.progress.emit(100)
         self.finished.emit(X_train, y_train)
