@@ -16,5 +16,4 @@ timm
 PyQt5
 scipy
 joblib
-pyinstaller
 tables
