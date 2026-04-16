@@ -38,6 +38,10 @@ Install and configure python 3.12.9 using PyEnv:
 4. Verify the python version: `python -V`
 5. Restart the terminal and try again if old version was displayed in step-4.
 
+If you used `python3 -V` instead `python -V` (in step-5), pyenv needs to be configured globally. This will change system to call the standard `python` instead `python3`.
+1. Update bash profile in the terminal: `echo 'eval "$(pyenv init --path)"' >> ~/.zshrc`
+
+
 ### Run the python code (app)
 Run the code once the python intepretor is pointing to correct version (`3.12.9`).
 1. Clone/download the code to local machine: 
