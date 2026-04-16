@@ -40,6 +40,7 @@ Install and configure python 3.12.9 using PyEnv:
 
 If you used `python3 -V` instead `python -V` (in step-5), pyenv needs to be configured globally. This will change system to call the standard `python` instead `python3`.
 1. Update bash profile in the terminal: `echo 'eval "$(pyenv init --path)"' >> ~/.zshrc`
+2. Refresh the config update: `source ~/.zshrc`
 
 
 ### Run the python code (app)
